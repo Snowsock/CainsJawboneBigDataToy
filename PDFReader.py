@@ -19,17 +19,15 @@ class Page:
     class that defines a page object
     values:
         page_number: the number of the page from 1...
-        words_on_page: a dictionary with the words on the page, and the number of occurences
+        words_on_page: a dictionary with the words on the page, and the number of occurrences
     """
 
-    page_number: int
-    words_on_page: dict
-
     def __init__(self, page_number: int):
-        self.page_number = page_number
-        self.words_on_page = dict()
+        words_on_page = self.extract_text_from_doc(page_number)
+        page_data_frame = self.make_data_frame(page_number)
+        print(page_data_frame)
 
-    def word_count(self, text):
+    def word_count(self, text) -> dict:
         words = text.split()
         words_on_page = dict()
         for word in words:
@@ -39,13 +37,14 @@ class Page:
                 words_on_page[word] = 1
         return words_on_page
 
-    def make_data_frame(self, page_number):
-        print(pd.DataFrame(self.word_count(
-            pytesseract.image_to_string(PIL.Image.open(rf'page{page_number}.jpg').rotate(-90, expand=True))).items()),
-              columns=['Word', 'Freq'])
+    def make_data_frame(self, page_number: int) -> pd.DataFrame:
+        return pd.DataFrame(self.word_count(
+            self.extract_text_from_doc(page_number)).items(), columns=['Word', 'Freq'])
+
+    def extract_text_from_doc(self, page_number: int) -> dict:
+        return pytesseract.image_to_string(PIL.Image.open(rf'page{page_number}.jpg').rotate(-90, expand=True))
 
 
 if __name__ == "__main__":
     # pdf_to_img("test.pdf")
     p = Page(1)
-    print(p.word_count(pytesseract.image_to_string(PIL.Image.open(r'page1.jpg').rotate(-90, expand=True))))
