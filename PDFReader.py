@@ -53,6 +53,7 @@ def menu():
     elif str_input == "Q" or str_input == "q":
         exit(0)
 
+
 class Page:
     """
     class that defines a page object
@@ -60,12 +61,18 @@ class Page:
         page_number: the number of the page from 1...
         words_on_page: a dictionary with the words on the page, and the number of occurrences
     """
+
     def __init__(self, page_number: int):
-        words_on_page = extract_text_from_doc(page_number)
-        page_data_frame = make_data_frame(page_number)
-        print(page_data_frame)
+        self.words_on_page = extract_text_from_doc(page_number)
+        self.page_data_frame = make_data_frame(page_number)
+        print(self.page_data_frame)
+
+    def get_words_on_page(self):
+        return self.words_on_page
+
+    def get_page_data_frame(self):
+        return self.page_data_frame
 
 
 if __name__ == "__main__":
-    # pdf_to_img("test.pdf")
     menu()
