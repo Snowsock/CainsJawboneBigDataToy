@@ -30,7 +30,9 @@ class Page:
     def word_count(self, text) -> dict:
         words = text.split()
         words_on_page = dict()
+        word: str
         for word in words:
+            word.strip()
             if word in words_on_page:
                 words_on_page[word] += 1
             else:
@@ -45,6 +47,12 @@ class Page:
         return pytesseract.image_to_string(PIL.Image.open(rf'page{page_number}.jpg').rotate(-90, expand=True))
 
 
+def menu():
+    print("How many pages do you want to analyze today?")
+    for x in (n + 1 for n in range(int(input()))):
+        Page(x)
+
+
 if __name__ == "__main__":
     # pdf_to_img("test.pdf")
-    p = Page(1)
+    menu()
