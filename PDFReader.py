@@ -37,10 +37,21 @@ def make_data_frame(page_number: int) -> pd.DataFrame:
 
 
 def menu():
-    print("How many pages do you want to analyze today?")
-    for x in (n + 1 for n in range(int(input()))):
-        Page(x)
-
+    print("This is a menu:\n1: Read in files\n2: analyse pages\nQ: Quit the program")
+    str_input: str = input()
+    if str_input == "1":
+        print("Which file do you want to make into pictures?\n")
+        pdf_to_img(f"{input()}.pdf")
+        print("DONE!")
+        menu()
+    elif str_input == "2":
+        print("How many pages do you want to analyze today?")
+        for x in (n + 1 for n in range(int(input()))):
+            Page(x)
+        print("DONE!")
+        menu()
+    elif str_input == "Q" or str_input == "q":
+        exit(0)
 
 class Page:
     """
