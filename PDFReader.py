@@ -1,7 +1,7 @@
 import pandas as pd
 import PIL.Image
 import pytesseract
-import advertools as adv
+import multiprocessing
 
 from pdf2image import convert_from_path
 
@@ -46,8 +46,10 @@ def menu():
         menu()
     elif str_input == "2":
         print("How many pages do you want to analyze today?")
+        processes = []
         for x in (n + 1 for n in range(int(input()))):
-            Page(x)
+            processes.append(multiprocessing.Process(target=Page, args=(x,)))
+            processes[x-1].start()
         print("DONE!")
         menu()
     elif str_input == "Q" or str_input == "q":
